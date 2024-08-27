@@ -245,7 +245,7 @@ export default function Explore() {
           />
 
           {suggestions.length > 0 && (
-            <ul className="suggestions-list bg-white shadow-lg ml-8  w-1/3 mt-2 rounded-lg fixed z-10">
+            <ul className="suggestions-list bg-white shadow-lg ml-8  w-1/3 mt-2 rounded-lg z-10 w-full">
               {suggestions.map((suggestion, index) => (
                 <li
                   key={index}
