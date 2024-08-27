@@ -373,7 +373,7 @@ export default function Explore() {
               alt="travel_1"
               className="w-full h-full  rounded-l-3xl "
             />
-            <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-col items-center text-center justify-center text-white z-10">
+            {/* <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-col items-center text-center justify-center text-white z-10">
               <h1 className="text-4xl font-bold ml-20 mt-20">Incredible India</h1>
               <p className="text-2xl ml-20">“For where thy treasure is,
               </p>
@@ -381,7 +381,7 @@ export default function Explore() {
               <button className="mt-4 px-20 py-2 bg-gray-300 text-white opacity-95 font-semibold rounded-md">
                 <p className="text-white">Tour</p>
               </button>
-            </div>
+            </div> */}
           </div>
         )}
 
