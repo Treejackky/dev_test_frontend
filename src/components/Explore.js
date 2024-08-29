@@ -80,9 +80,11 @@ export default function Explore() {
   // }, []);
 
   let Search_Hotels = async (location) => {
-    try {
-      const res = await axios.get(production_check()+"/v1/hotels" + location);
-      // console.log(location);
+
+
+    console.log(production_check());
+
+    axios.get(production_check()+"/v1/hotels" + location).then((res) => {
       console.log(res.data.msg);
 
       if (location) {
@@ -90,12 +92,26 @@ export default function Explore() {
         window.location.href = `/hotels/${location}`;
       }
 
-      // setData(res.data.msg);
-      // return res;
-    } catch (error) {
-      console.error("Error fetching hotels:", error);
-      throw error;
-    }
+       
+    });
+
+
+    // try {
+    //   const res = await axios.get(production_check()+"/v1/hotels" + location);
+    //   // console.log(location);
+    //   console.log(res.data.msg);
+
+    //   if (location) {
+    //     // navigate(`/hotels/${location}`);
+    //     window.location.href = `/hotels/${location}`;
+    //   }
+
+    //   // setData(res.data.msg);
+    //   // return res;
+    // } catch (error) {
+    //   console.error("Error fetching hotels:", error);
+    //   throw error;
+    // }
   };
 
   const Params = () => {
