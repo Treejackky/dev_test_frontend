@@ -5,11 +5,15 @@ import Hotel from "../Hotel.png";
 import Flight from "../Flight.png";
 import Car from "../Car.png";
 import Tuhmahal from "../travel_1.jpg";
+import BookNow from "../BookNow.png";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import { useState, useEffect } from "react";
 // import json file
 import thai_provinces from "../thai_provinces.json";
 import thai_hotels from "../thai_hotels.json";
+// import { fetchHotels } from "./Api";
 
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import InsertInvitationOutlinedIcon from "@mui/icons-material/InsertInvitationOutlined";
@@ -33,17 +37,15 @@ const formatDate = (date) => {
 };
 
 export default function Explore() {
-  const [width, setWidth] = useState(window.innerWidth);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const handleResize = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  const [width, setWidth] = useState(window.innerWidth);
 
   const [selected, setSelected] = useState("Hotel");
   const dtp = thai_provinces.map((_) => _.name_en);
   const htp = thai_hotels;
+
+  const [data, setData] = useState([]);
 
   const [inputValue, setInputValue] = useState("");
   const [inputValue2, setInputValue2] = useState("");
@@ -55,15 +57,49 @@ export default function Explore() {
   const [visible, setVisible] = useState(false);
   const [params, setParams] = useState("");
 
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  //  useEffect(() => {
+  //   // console.log(fetchHotels());
+  //   // setData(res);
+  // }, []);
+
+  let Search_Hotels = async (location) => {
+    try {
+      const res = await axios.get("http://localhost:8765/v1/hotels" + location);
+      // console.log(location);
+      console.log(res.data.msg);
+
+      if (location) {
+        // navigate(`/hotels/${location}`);
+        window.location.href = `/hotels/${location}`;
+      }
+
+      // setData(res.data.msg);
+      // return res;
+    } catch (error) {
+      console.error("Error fetching hotels:", error);
+      throw error;
+    }
+  };
+
   const Params = () => {
-    let data = htp.filter((_) => _.state === inputValue2);
+    // let value = data.filter((_) => _.location === inputValue2);
 
-    console.log(data);
+    if (inputValue2) {
+      Search_Hotels(inputValue2);
+    }
 
-    setParams(
-      `?adults=${adults}&children=${children}&rooms=${rooms}&startDate=${startDate}&endDate=${endDate}`
-    );
-    console.log(params);
+    // console.log(value);
+
+    // setParams(
+    //   `?adults=${adults}&children=${children}&rooms=${rooms}&startDate=${startDate}&endDate=${endDate}`
+    // );
+    // console.log(params);
   };
 
   const handleVisibleChange = (visible) => {
@@ -214,6 +250,113 @@ export default function Explore() {
     }
   };
 
+  const hotel_detail = (
+    <div className="flex items-center justify-center bg-white ml-8 mr-8 mt-14 mb-14 shadow-lg rounded-lg ">
+      <ul className={`${width > 1024 ? "flex" : ""}`}>
+        <img src={Tuhmahal} alt="hotel" className="w-60 h-40 object-fill" />
+        <ul
+          className={`${
+            width > 1024 ? "flex flex-col ml-10" : "flex flex-col mt-5"
+          }`}
+        >
+          <li
+            className={`${
+              width < 1024
+                ? "text-xl font-semibold ml-3"
+                : "text-xl font-semibold"
+            }`}
+          >
+            Hotel JW Marriott
+          </li>
+          <li
+            className={`${
+              width < 1024 ? "flex items-center ml-3" : "flex items-center"
+            }`}
+          >
+            <span className="text-yellow-400">★★★★☆</span>
+            <span className="text-sm text-gray-500 ml-2">4.9</span>
+            <span className="text-sm text-gray-500 ml-2">(1366 Reviews)</span>
+          </li>
+          <li
+            className={`${
+              width < 1024
+                ? "text-sm text-gray-500 ml-3"
+                : "text-sm text-gray-500"
+            }`}
+          >
+            Amenities
+          </li>
+
+          <li
+            className={`${
+              width < 1024 ? "flex space-x-2 mt-2 ml-3" : "flex space-x-2 mt-2"
+            }`}
+          >
+            <span
+              className={`${
+                width < 1024 ? "text-gray-500 ml-3" : "text-gray-500"
+              }`}
+            >
+              🚗
+            </span>
+            <span
+              className={`${
+                width < 1024 ? "text-gray-500 ml-3" : "text-gray-500"
+              }`}
+            >
+              🛏️
+            </span>
+            <span
+              className={`${
+                width < 1024 ? "text-gray-500 ml-3" : "text-gray-500"
+              }`}
+            >
+              🍽️
+            </span>
+            <span
+              className={`${
+                width < 1024 ? "text-gray-500 ml-3" : "text-gray-500"
+              }`}
+            >
+              📶
+            </span>
+            <span
+              className={`${
+                width < 1024 ? "text-gray-500 ml-3" : "text-gray-500"
+              }`}
+            >
+              ➕
+            </span>
+          </li>
+          <li
+            className={`${
+              width < 1024
+                ? "text-lg font-bold text-blue-600 mt-4 ml-3"
+                : "text-lg font-bold text-blue-600 mt-4"
+            }`}
+          >
+            1,000/night
+          </li>
+        </ul>
+
+        <li
+          className={`${
+            width > 1024
+              ? "bg-[#2D3DDF] ml-10 text-white items-center text-center justify-center"
+              : "bg-[#2D3DDF] text-white mt-5"
+          }`}
+        >
+          <button
+            className="flex w-full items-center text-center justify-center px-4 py-2"
+            style={{ writingMode: `${width > 1024 ? " vertical-rl" : ""}` }}
+          >
+            Book Now
+          </button>
+        </li>
+      </ul>
+    </div>
+  );
+
   return (
     <>
       {width < 1024 && (
@@ -223,18 +366,9 @@ export default function Explore() {
             alt="travel_1"
             className="rounded-b-2xl w-full h-full z-0 opacity-80"
           />
-          {/* <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-col items-center text-center justify-center text-white z-10">
-            <h1 className="text-2xl font-bold">Incredible India</h1>
-            <p className="text-lg">
-              “For where thy treasure is, here also will thy heart be.”
-            </p>
-            <button className="mt-4 px-20 py-2 bg-gray-300 text-white opacity-95 font-semibold rounded-md">
-              <p className="text-white">Tour</p>
-            </button>
-          </div> */}
         </div>
       )}
-      <div className="flex">
+      <div className="flex overflow-hidden">
         <div>
           <input
             type="text"
@@ -245,7 +379,7 @@ export default function Explore() {
           />
 
           {suggestions.length > 0 && (
-            <ul className="suggestions-list bg-white shadow-lg ml-8  w-1/3 mt-2 rounded-lg z-10 w-full">
+            <ul className="suggestions-list bg-white shadow-lg ml-8 overflow-y-auto h-1/6 mt-2 rounded-lg z-10 w-full">
               {suggestions.map((suggestion, index) => (
                 <li
                   key={index}
@@ -351,41 +485,33 @@ export default function Explore() {
             </p>
           </div>
 
-          <div className="flex justify-center  ml-8 mt-10">
+          <div className="flex justify-center  bg-slate-300 mt-10">
             <button
               onClick={(_) => {
                 Params();
               }}
-              className="bg-[#2D3DDF] text-white px-20 py-4  rounded-sm"
+              className="bg-[#2D3DDF] text-white px-20 py-4 rounded-sm"
             >
-              {" "}
-              Search{" "}
+              Search
             </button>
           </div>
 
-          <div className="flex justify-start  ml-10 mt-10">Recent Searches</div>
+          <div className="flex justify-start ml-10 mt-10">Recent Searches</div>
+          {/* ff */}
         </div>
-
         {width > 1024 && (
           <div className="flex-1 ml-16 w-44 h-full object-cover">
-            <img
-              src={Tuhmahal}
-              alt="travel_1"
-              className="w-full h-full  rounded-l-3xl "
-            />
-            {/* <div className="absolute top-0 left-0 right-0 bottom-0 flex flex-col items-center text-center justify-center text-white z-10">
-              <h1 className="text-4xl font-bold ml-20 mt-20">Incredible India</h1>
-              <p className="text-2xl ml-20">“For where thy treasure is,
-              </p>
-              <p className="text-2xl ml-20">{" "}”here also will thy heart be.</p>
-              <button className="mt-4 px-20 py-2 bg-gray-300 text-white opacity-95 font-semibold rounded-md">
-                <p className="text-white">Tour</p>
-              </button>
-            </div> */}
+            <img src={Tuhmahal} alt="travel_1" className="w-full h-full  " />
           </div>
         )}
 
         {width <= 1024 && <div className="flex-1 ml-16 w-full h-full"></div>}
+      </div>
+
+      <div className="mt-8">
+        <div className={`flex ${width < 1024 ? "" : ""} space-x-4`}>
+          {hotel_detail}
+        </div>
       </div>
     </>
   );
