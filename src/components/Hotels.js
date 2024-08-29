@@ -48,6 +48,17 @@ export default function Hotels() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+
+  function production_check() {
+    const isDevelopment =
+      window.location.origin.includes("localhost") ||
+      window.location.origin.includes("127.0.0.1");
+
+    return isDevelopment
+      ? "http://localhost:3000"
+      : "https://api-project-blue.vercel.app";
+  }
+
   const handleInputChange = (event) => {
     const value = event.target.value;
     setInputValue(value);
@@ -70,7 +81,7 @@ export default function Hotels() {
 
   let Search_Hotels = async (location) => {
     try {
-      const res = await axios.get("http://localhost:8765/v1/hotels" + location);
+      const res = await axios.get(production_check()+"/v1/hotels" + location);
       console.log(location);
       console.log(res.data.msg);
 
