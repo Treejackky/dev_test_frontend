@@ -6,6 +6,7 @@ import Explore from './components/Explore';
 import Hotels from './components/Hotels';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Review from './components/Review';
 
 
 const router = createBrowserRouter([
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: '/hotels/:location',
     element: <Hotels />,
+  },
+  {
+    path: '/review/:location/:hotel/:id',
+    element: <Review />,
   }
 ]);
 

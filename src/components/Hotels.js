@@ -36,6 +36,7 @@ export default function Hotels() {
   const [inputValue, setInputValue] = useState("");
   const [inputValue2, setInputValue2] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [default_data, setDefaultData] = useState([]);
 
   //   const navigate = useNavigate();
   const [selected, setSelected] = useState("Explore");
@@ -86,37 +87,30 @@ export default function Hotels() {
     axios.get(production_check()+"/v1/hotels" + location).then((res) => {
         console.log(res.data.msg);
         setData(res.data.msg);
-  
-        // if (location) {
-        //   // navigate(`/hotels/${location}`);
-        //   window.location.href = `/hotels/${location}`;
-        // }
-  
-         
-      });
-      
-    // try {
-    //   const res = await axios.get(production_check()+"/v1/hotels" + location);
-    //   console.log(location);
-    //   console.log(res.data.msg);
+    });
 
-    //   setData(res.data.msg);
+    axios.get(production_check()+"/v1/hotels" + "Bangkok").then((res) => {
+        // console.log(res.data.msg);
+        // setData(res.data.msg);
+        setDefaultData(res.data.msg);
+    });
 
-    //   //   if(location){
-    //   // window.location.href = `/hotels/${location}`;
-    //   //   }
-
-    //   // setData(res.data.msg);
-    //   // return res;
-    // } catch (error) {
-    //   console.error("Error fetching hotels:", error);
-    //   throw error;
-    // }
   };
   
   const handle_back = () => {
     window.location.href = `/`;
     console.log("Back");
+  };
+
+  const handle_review = (e) => {
+    // parse to string json 
+    let locations = e.location;
+    let id = e.id;
+    let name = e.name;
+    console.log(e)
+    // e = JSON.stringify(e);
+    window.location.href = `/review/${locations}/${name}/${id}`;
+    console.log("Review",e);
   };
 
   useEffect(() => {
@@ -356,9 +350,9 @@ export default function Hotels() {
           width <= 800 ? "items-center" : ""
         } `}
       >
-        <div className="flex">
+        <div className="flex ">
           {width > 800 && (
-            <div className="sticky top-0 h-full">
+            <div className="h-screen sticky top-0">
               <Sidebar />
             </div>
           )}
@@ -383,7 +377,7 @@ export default function Hotels() {
                     </button>
                   )}
 
-                  <div className=" items-center ml-10 mr-10  ">
+                  <div className={`${width < 800 ? " items-center ml-10 mr-10" : "items-center mt-1 mr-10"}`}>
                     <input
                       type="text"
                       value={inputValue}
@@ -437,7 +431,7 @@ export default function Hotels() {
                     
                     <div className=" px-5 mt-5 w-96 flex overflow-auto ">
                      
-                      {data.map((hotel, index) => (
+                      {default_data.map((hotel, index) => (
                         <ul key={index} className="mb-6 space-x-4 w-80">
                           <img
                             src={hotel.image}
@@ -461,7 +455,6 @@ export default function Hotels() {
 
                     {/* Main Hotel Listings */}
                     <div className="flex-1  px-5 py-10">
-                     
                       <div className="mt-6 justify-between font-semibold mb-4 text-[#2D3DDF] ">
                         <h1 className="text-xl text-black">
                           Best places to enjoy your stay
@@ -496,7 +489,7 @@ export default function Hotels() {
                                   Price starts from 1,000
                                 </p>
                               </div>
-                              <button className="mt-4 h-10 w-48  text-xs bg-gray rounded text-[#2D3DDF] border-2 border-gray-100">
+                              <button onClick={(_)=>{handle_review(hotel)}}  className="mt-4 h-10 w-48  text-xs bg-gray rounded text-[#2D3DDF] border-2 border-gray-100">
                                 View Details
                               </button>
                             </div>
@@ -551,7 +544,7 @@ export default function Hotels() {
                               </div>
 
 
-                              <button className="mt-4 h-10 w-40 text-center text-xs bg-gray rounded text-[#2D3DDF] border-2 border-gray-100">
+                              <button onClick={(_)=>{handle_review(hotel)}} className="mt-4 h-10 w-40 text-center text-xs bg-gray rounded text-[#2D3DDF] border-2 border-gray-100">
                                 View Details
                               </button>
 
@@ -568,7 +561,7 @@ export default function Hotels() {
                       <h1 className="text-xl mt-6 font-semibold mb-4">
                         Recommended
                       </h1>
-                      {data.map((hotel, index) => (
+                      {default_data.map((hotel, index) => (
                         <ul key={index} className="mb-6">
                           <img
                             src={hotel.image}
