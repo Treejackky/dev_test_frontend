@@ -63,6 +63,17 @@ export default function Explore() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  function production_check() {
+    const isDevelopment =
+      window.location.origin.includes("localhost") ||
+      window.location.origin.includes("127.0.0.1");
+
+    return isDevelopment
+      ? "http://localhost:8765"
+      : "https://api-project-blue.vercel.app";
+  }
+
+
   //  useEffect(() => {
   //   // console.log(fetchHotels());
   //   // setData(res);
@@ -70,7 +81,7 @@ export default function Explore() {
 
   let Search_Hotels = async (location) => {
     try {
-      const res = await axios.get("http://localhost:8765/v1/hotels" + location);
+      const res = await axios.get(production_check()+"/v1/hotels" + location);
       // console.log(location);
       console.log(res.data.msg);
 

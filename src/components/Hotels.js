@@ -55,7 +55,7 @@ export default function Hotels() {
       window.location.origin.includes("127.0.0.1");
 
     return isDevelopment
-      ? "http://localhost:3000"
+      ? "http://localhost:8765"
       : "https://api-project-blue.vercel.app";
   }
 
