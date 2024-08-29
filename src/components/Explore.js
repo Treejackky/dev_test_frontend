@@ -485,7 +485,7 @@ export default function Explore() {
             </p>
           </div>
 
-          <div className="flex justify-center  bg-slate-300 mt-10">
+          <div className="flex justify-center ml-16 mt-10">
             <button
               onClick={(_) => {
                 Params();
