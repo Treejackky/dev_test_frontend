@@ -10,6 +10,7 @@ import PG3 from "../PG3.png";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 import { useState, useEffect } from "react";
 // import json file
@@ -367,9 +368,9 @@ export default function Hotels() {
               <div className={`${width > 800 ? "" : ""}`}>
                 <div className={`${width > 800 ? "flex w-full" : ""}`}>
                   {width > 800 && (
-                    <button onClick={(_)=>{handle_back()}} className="flex items-center w-14 h-12 justify-between bg-[#2D3DDF] text-white ml-8 mt-10 mb-14 shadow-lg rounded-full">
+                    <button onClick={(_)=>{handle_back()}} className="flex items-center w-14 h-12 justify-between bg-[#EBEDFF] ml-8 mt-10 mb-14 shadow-lg rounded-full">
                         <div></div>
-                      <ArrowBackIosIcon/> 
+                      <ArrowBackIosNewIcon/> 
                       <div></div>
                     </button>
                   )}
@@ -400,7 +401,7 @@ export default function Hotels() {
                         className={`${
                           width < 800
                             ? "suggestions-list bg-white shadow-lg  overflow-y-auto h-1/6 mt-2 rounded-lg z-10 w-full"
-                            : "suggestions-list bg-white shadow-lg h-20 ml-8 overflow-y-auto h-1/6 mt-2 rounded-lg z-10 w-full"
+                            : "suggestions-list bg-white shadow-lg h-20 ml-8 overflow-y-auto  mt-2 rounded-lg z-10 w-full"
                         }`}
                       >
                         {suggestions.map((suggestion, index) => (
