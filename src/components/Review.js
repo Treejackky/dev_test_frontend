@@ -318,7 +318,7 @@ export default function Review() {
     console.log(production_check());
     try {
       // ส่งคำขอ POST ไปยัง API ด้วยข้อมูลที่ต้องการ
-      const res = await axios.post(production_check() + "/v1/cal_price", {
+      const res = await axios.post("https://api-project-blue.vercel.app/v1/cal_price", {
         checkin: checkin,
         checkout: checkout,
         adult: adult,

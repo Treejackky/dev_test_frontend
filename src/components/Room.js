@@ -231,7 +231,7 @@ export default function Room() {
 
   let Search_Hotels = async (location, id, name) => {
     console.log(location, id, name);
-    axios.get(production_check() + "/v1/hotels/rooms" + id).then((res) => {
+    axios.get("https://api-project-blue.vercel.app/v1/hotels/rooms" + id).then((res) => {
       console.log(res.data.msg);
       setData(res.data.msg);
     });
