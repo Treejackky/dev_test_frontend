@@ -8,6 +8,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Room from './components/Room';
 import Review from './components/Review';
+// import Payment from './components/payment';
 import Payment from './components/payment';
 import FinalPass from '../src/components/FinalPass';
 
