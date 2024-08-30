@@ -298,15 +298,16 @@ export default function Review() {
       locations
     );
 
-    setAdults(adult);
-    setChildren(childrens);
-    setRooms(room_num);
-    setStartDate(checkin);
-    setEndDate(checkout);
+    // setAdults(adult);
+    // setChildren(childrens);
+    // setRooms(room_num);
+    // setStartDate(checkin);
+    // setEndDate(checkout);
 
     api_cal();
   }, []);
 
+  
 
   const handle_payment = (e) => {
     // let path = 
@@ -338,8 +339,14 @@ export default function Review() {
         setHotel_name(res.data.msg.hotel[0].name);
         setHotel_desc(res.data.msg.hotel[0].desc);
         setImg(res.data.msg.hotel[0].image);
-        setCheckin_api(res.data.msg.checkin);
-        setCheckout_api(res.data.msg.checkout);
+
+        // convert date Sunday, 23 Dec
+
+        let start = formatDate(dayjs(checkin));
+        let end = formatDate(dayjs(checkout));
+    
+        setCheckin_api(start);
+        setCheckout_api(end);
         setAdult_api(res.data.msg.adult);
         setChildren_api(res.data.msg.children);
         setRoomType_api(res.data.msg.rooms);
