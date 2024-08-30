@@ -341,12 +341,9 @@ export default function Review() {
         setImg(res.data.msg.hotel[0].image);
 
         // convert date Sunday, 23 Dec
-
-        let start = formatDate(dayjs(checkin));
-        let end = formatDate(dayjs(checkout));
     
-        setCheckin_api(start);
-        setCheckout_api(end);
+        setCheckin_api(res.data.msg.checkin);
+        setCheckout_api(res.data.msg.checkout);
         setAdult_api(res.data.msg.adult);
         setChildren_api(res.data.msg.children);
         setRoomType_api(res.data.msg.rooms);
@@ -893,9 +890,9 @@ export default function Review() {
                         <div className="flex w-full  justify-between items-center">
                         <div className="">
                           <p className="text-sm text-gray-500">Check-in</p>
-                          <p className="text-lg font-bold">{checkin_api}</p>
+                          <p className="text-lg font-bold">{formatDate(dayjs(checkin_api))}</p>
                           <p className="text-sm text-gray-500">10am</p>
-                        </div>
+                        </div>checkin_api
                         <div className="text-center items-center ">
                           <p className="bg-blue-100 text-blue-500 px-4 py-1 rounded-full">
                             {total_day-1} Night
@@ -907,7 +904,7 @@ export default function Review() {
 
                         <div>
                           <p className="text-sm text-gray-500">Check-out</p>
-                          <p className="text-lg font-bold">{checkout_api}</p>
+                          <p className="text-lg font-bold">{formatDate(dayjs(checkout_api))}</p>
                           <p className="text-sm text-gray-500">10am</p>
                         </div>
                         <p className="text-lg font-semibold">
