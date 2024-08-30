@@ -252,7 +252,7 @@ export default function Review() {
 
   let Search_Hotels = async (location, id, name) => {
     console.log(location, id, name);
-    axios.get(production_check() + "/v1/hotels/rooms" + id).then((res) => {
+    axios.get( "https://api-project-blue.vercel.app/v1/hotels/rooms" + id).then((res) => {
       console.log(res.data.msg);
       setData(res.data.msg);
     });
@@ -309,9 +309,10 @@ export default function Review() {
 
 
   const handle_payment = (e) => {
-    let path = `/payment/${checkin}/${checkout}/${adult}/${childrens}/${room}/${base_price}/${room_num}/${id}/${hotel}/${locations}`;
-    window.location.href = path;
+    // let path = 
+    window.location.href = `/payment/${checkin}/${checkout}/${adult}/${childrens}/${room}/${base_price}/${room_num}/${id}/${hotel}/${locations}`;
     // window.location.href = `/hotels/${e}`;
+    console.log(`/payment/${checkin}/${checkout}/${adult}/${childrens}/${room}/${base_price}/${room_num}/${id}/${hotel}/${locations}`);
   }
 
   const api_cal = async () => {
