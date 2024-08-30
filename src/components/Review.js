@@ -298,11 +298,11 @@ export default function Review() {
       locations
     );
 
-    // setAdults(adult);
-    // setChildren(childrens);
-    // setRooms(room_num);
-    // setStartDate(checkin);
-    // setEndDate(checkout);
+    setAdults(adult);
+    setChildren(childrens);
+    setRooms(room_num);
+    setStartDate(checkin);
+    setEndDate(checkout);
 
     api_cal();
   }, []);
