@@ -307,6 +307,13 @@ export default function Review() {
     api_cal();
   }, []);
 
+
+  const handle_payment = (e) => {
+    let path = `/payment/${checkin}/${checkout}/${adult}/${childrens}/${room}/${base_price}/${room_num}/${id}/${hotel}/${locations}`;
+    window.location.href = path;
+    // window.location.href = `/hotels/${e}`;
+  }
+
   const api_cal = async () => {
     console.log(production_check());
     try {
@@ -764,9 +771,9 @@ export default function Review() {
                           ></textarea>
                         </div>
                       </div>
-                      <div className="flex  mt-3 items-center text-white bg-[#2D3DDF] px-4 py-2 w-40 justify-center rounded-sm border-opacity-35 border-2 border-[#2D3DDF]">
+                      <button onClick={(_)=>{handle_payment()}} className="flex  mt-3 items-center text-white bg-[#2D3DDF] px-4 py-2 w-40 justify-center rounded-sm border-opacity-35 border-2 border-[#2D3DDF]">
                         Continue
-                      </div>
+                      </button>
                     </div>
   
                     {/* ขวา */}
@@ -1021,9 +1028,9 @@ export default function Review() {
                           ></textarea>
                         </div>
                       </div>
-                      <div className="flex  mt-3 items-center text-white bg-[#2D3DDF] px-4 py-2 w-full justify-center rounded-sm border-opacity-35 border-2 border-[#2D3DDF]">
+                      <button  onClick={(_)=>{handle_payment()}} className="flex  mt-3 items-center text-white bg-[#2D3DDF] px-4 py-2 w-full justify-center rounded-sm border-opacity-35 border-2 border-[#2D3DDF]">
                         Continue
-                      </div>
+                      </button>
                       </div>
                       
                     </div>

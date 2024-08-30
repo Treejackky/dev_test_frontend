@@ -8,6 +8,8 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Room from './components/Room';
 import Review from './components/Review';
+import Payment from '../src/components/Payment';
+import FinalPass from '../src/components/FinalPass';
 
 
 const router = createBrowserRouter([
@@ -30,6 +32,14 @@ const router = createBrowserRouter([
   {
     path: '/room/:locations/:id/:name/',
     element: <Room />,
+  },
+  {
+    path: '/payment/:checkin/:checkout/:adult/:childrens/:room/:base_price/:room_num/:id/:hotel/:locations',
+    element: <Payment />,
+  },
+  {
+    path: '/finalpass',
+    element: <FinalPass />,
   }
 ]);
 
