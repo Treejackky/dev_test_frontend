@@ -60,7 +60,7 @@ export default function FinalPass() {
               </div>
 
               <h1 class="text-2xl font-bold text-blue-600 mb-2">
-                Booking Successfully Completed
+                Booking Successfully Complete
               </h1>
 
               <p class="text-gray-600 mb-6 mr-5 ml-5">
