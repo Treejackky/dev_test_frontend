@@ -53,7 +53,7 @@ export default function FinalPass() {
         )}
 
         {width <= 800 && (
-          <div className="flex flex-col  items-center justify-around w-screen min-h-screen">
+          <div className="flex flex-col  items-center justify-around w-screen min-h-screen ">
             <div class="flex flex-col items-center justify-center w-screen  bg-white">
               <div class="mb-8">
                 <img src={PG3} alt="Astronaut with flag" class="h-40 w-full" />
@@ -63,7 +63,7 @@ export default function FinalPass() {
                 Booking Successfully Completed
               </h1>
 
-              <p class="text-gray-600 mb-6">
+              <p class="text-gray-600 mb-6 mr-5 ml-5">
                 Your trip schedule is ready, please check under profile.
               </p>
             </div>

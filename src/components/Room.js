@@ -621,33 +621,33 @@ export default function Room() {
                           className="flex flex-col items-center justify-center p-4"
                         >
                           <div className="flex flex-col items-start justify-center w-full space-y-4">
-                        <div className="flex space-x-2">
-                           <img
-                            src={hotels.image}
-                            className="w-full h-72 object-cover"
-                            alt="hotel"
-                          />
-                           <div className="flex flex-col space-y-2">
-                            <img
-                              src={hotels.image}
-                              className="w-96 h-48 object-cover"
-                              alt="hotel"
-                            />
                             <div className="flex space-x-2">
                               <img
                                 src={hotels.image}
-                                className="w-32 h-24 object-cover"
+                                className="w-full h-72 object-cover"
                                 alt="hotel"
                               />
-                              <img
-                                src={hotels.image}
-                                className="w-32 h-24 object-cover"
-                                alt="hotel"
-                              />
+                              <div className="flex flex-col space-y-2">
+                                <img
+                                  src={hotels.image}
+                                  className="w-96 h-48 object-cover"
+                                  alt="hotel"
+                                />
+                                <div className="flex space-x-2">
+                                  <img
+                                    src={hotels.image}
+                                    className="w-32 h-24 object-cover"
+                                    alt="hotel"
+                                  />
+                                  <img
+                                    src={hotels.image}
+                                    className="w-32 h-24 object-cover"
+                                    alt="hotel"
+                                  />
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
 
                           {/* Hotel Details */}
                           <div className="text-left mt-4 flex w-full justify-around">
@@ -664,70 +664,157 @@ export default function Room() {
 
                           {/* Room Details */}
                           <div className="flex justify-between w-full">
-                        {hotels.room.map((room, index) => (
-                          <div className=" items-center justify-center bg-white mr-8 mt-14 mb-14 shadow-lg rounded-lg ">
-                            <ul className={`${width > 1024 ? "flex" : ""}`}>
-                              <img
-                                src={hotels.image}
-                                alt="hotel"
-                                className="w-60 h-40 object-fill"
-                              />
-                              <ul
-                                className={`${
-                                  width > 1024
-                                    ? "flex flex-col ml-10"
-                                    : "flex flex-col mt-5"
-                                }`}
-                              >
-                                <li
-                                  className={`${
-                                    width < 1024
-                                      ? "text-xl font-semibold ml-3"
-                                      : "text-xl font-semibold"
-                                  }`}
-                                >
-                                  {room.type}
-                                </li>
+                            {hotels.room.map((room, index) => (
+                              <div className=" items-center justify-center bg-white mr-8 mt-14 mb-14 shadow-lg rounded-lg ">
+                                <ul className={`${width > 1024 ? "flex" : ""}`}>
+                                  <img
+                                    src={hotels.image}
+                                    alt="hotel"
+                                    className="w-40 h-auto object-fill"
+                                  />
+                                  <ul
+                                    className={`${
+                                      width > 1024
+                                        ? "flex flex-col ml-10"
+                                        : "flex flex-col mt-5"
+                                    }`}
+                                  >
+                                    <li
+                                      className={`${
+                                        width < 1024
+                                          ? "text-xl font-semibold ml-3"
+                                          : "text-xl font-semibold"
+                                      }`}
+                                    >
+                                      {room.type}
+                                    </li>
 
-                                <li
-                                  className={`${
-                                    width < 1024
-                                      ? "text-lg font-bold text-blue-600 mt-4 ml-3"
-                                      : "text-lg font-bold text-blue-600 mt-4"
-                                  }`}
-                                >
-                                  {room.price}/night
-                                </li>
-                              </ul>
+                                    <li
+                                      className={`${
+                                        width < 1024
+                                          ? "text-lg font-bold text-blue-600 mt-4 ml-3"
+                                          : "text-lg font-bold text-blue-600 mt-4"
+                                      }`}
+                                    >
+                                      {room.price}/night
+                                    </li>
+                                  </ul>
 
-                              <li
-                                className={`${
-                                  width > 1024
-                                    ? "bg-[#2D3DDF] ml-10 text-white items-center text-center justify-center"
-                                    : "bg-[#2D3DDF] text-white mt-5"
-                                }`}
-                              >
-                                <button
-                                  onClick={(_) => {
-                                    handle_booknow(room, hotels);
-                                  }}
-                                  className="flex w-full items-center text-center justify-center px-4 py-2"
-                                  style={{
-                                    writingMode: `${
-                                      width > 1024 ? " vertical-rl" : ""
-                                    }`,
-                                  }}
-                                >
-                                  <p className="h-36 items-center"> Book Now</p>
-                                </button>
-                              </li>
-                            </ul>
+                                  <li
+                                    className={`${
+                                      width > 1024
+                                        ? "bg-[#2D3DDF] ml-10 text-white items-center text-center justify-center"
+                                        : "bg-[#2D3DDF] text-white mt-5"
+                                    }`}
+                                  >
+                                    <button
+                                      onClick={(_) => {
+                                        handle_booknow(room, hotels);
+                                      }}
+                                      className="flex w-full items-center text-center justify-center px-4 py-2"
+                                      style={{
+                                        writingMode: `${
+                                          width > 1024 ? " vertical-rl" : ""
+                                        }`,
+                                      }}
+                                    >
+                                      <p className="h-36 items-center">
+                                        {" "}
+                                        Book Now
+                                      </p>
+                                    </button>
+                                  </li>
+                                </ul>
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
                           {/* Test */}
                         </div>
                       ))}
+                      <div>
+                        <div class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto mt-3">
+                          <div class="flex items-center mb-4">
+                            <div class="bg-blue-500 text-white text-xl font-bold p-3 rounded-lg mr-3">
+                              8.4
+                            </div>
+                            <div>
+                              <p class="font-semibold text-lg">Excellent</p>
+                              <p class="text-gray-500 text-sm">6879 Reviews</p>
+                            </div>
+                          </div>
+
+                          <div class="mb-4">
+                            <div class="flex items-center mb-2">
+                              <span class="text-gray-700 w-32">
+                                Housekeeping
+                              </span>
+                              <div class="flex space-x-1">
+                                <span class="text-yellow-500">&#9733;</span>
+                                <span class="text-yellow-500">&#9733;</span>
+                                <span class="text-yellow-500">&#9733;</span>
+                                <span class="text-yellow-500">&#9733;</span>
+                                <span class="text-gray-300">&#9733;</span>
+                              </div>
+                            </div>
+                            <div class="flex items-center mb-2">
+                              <span class="text-gray-700 w-32">Food</span>
+                              <div class="flex space-x-1">
+                                <span class="text-yellow-500">&#9733;</span>
+                                <span class="text-yellow-500">&#9733;</span>
+                                <span class="text-yellow-500">&#9733;</span>
+                                <span class="text-yellow-500">&#9733;</span>
+                                <span class="text-yellow-500">&#9733;</span>
+                              </div>
+                            </div>
+                            <div class="flex items-center mb-2">
+                              <span class="text-gray-700 w-32">Service</span>
+                              <div class="flex space-x-1">
+                                <span class="text-yellow-500">&#9733;</span>
+                                <span class="text-yellow-500">&#9733;</span>
+                                <span class="text-yellow-500">&#9733;</span>
+                                <span class="text-yellow-500">&#9733;</span>
+                                <span class="text-gray-300">&#9733;</span>
+                              </div>
+                            </div>
+                            <div class="flex items-center mb-2">
+                              <span class="text-gray-700 w-32">Staff</span>
+                              <div class="flex space-x-1">
+                                <span class="text-yellow-500">&#9733;</span>
+                                <span class="text-yellow-500">&#9733;</span>
+                                <span class="text-yellow-500">&#9733;</span>
+                                <span class="text-yellow-500">&#9733;</span>
+                                <span class="text-gray-300">&#9733;</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="mb-4">
+                            <p class="font-semibold text-gray-700">Services</p>
+                            <div class="flex space-x-3 mt-2">
+                              <div class="p-2 bg-gray-100 rounded-lg shadow">
+                                <i class="fas fa-car"></i>
+                              </div>
+                              <div class="p-2 bg-gray-100 rounded-lg shadow">
+                                <i class="fas fa-swimmer"></i>
+                              </div>
+                              <div class="p-2 bg-gray-100 rounded-lg shadow">
+                                <i class="fas fa-concierge-bell"></i>
+                              </div>
+                              <div class="p-2 bg-gray-100 rounded-lg shadow">
+                                <i class="fas fa-wifi"></i>
+                              </div>
+                              <div class="p-2 bg-gray-100 rounded-lg shadow">
+                                <i class="fas fa-dumbbell"></i>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="text-red-500 text-center font-semibold mt-4">
+                            <span class="inline-block mr-2">&#9888;</span>
+                            This property is in high demand today.
+                          </div>
+                        </div>
+                      </div>
                     </>
                   )}
 
@@ -740,29 +827,28 @@ export default function Room() {
                         >
                           {/* Hotel Images */}
                           <div className="flex flex-col items-start justify-center w-full space-y-4">
-                        <div className=" space-y-2">
-                           <img
-                            src={hotels.image}
-                            className="w-full h-72 object-cover"
-                            alt="hotel"
-                          />
-                           <div className="flex flex-col space-y-4">
-                            
-                            <div className="flex space-x-2">
+                            <div className=" space-y-2">
                               <img
                                 src={hotels.image}
-                                className="w-96 h-24 object-cover"
+                                className="w-full h-72 object-cover"
                                 alt="hotel"
                               />
-                              <img
-                                src={hotels.image}
-                                className="w-96 h-24 object-cover"
-                                alt="hotel"
-                              />
+                              <div className="flex flex-col space-y-4">
+                                <div className="flex space-x-2">
+                                  <img
+                                    src={hotels.image}
+                                    className="w-96 h-24 object-cover"
+                                    alt="hotel"
+                                  />
+                                  <img
+                                    src={hotels.image}
+                                    className="w-96 h-24 object-cover"
+                                    alt="hotel"
+                                  />
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
 
                           {/* Hotel Details */}
                           <div className="text-left mt-4  w-full justify-around">
@@ -779,159 +865,165 @@ export default function Room() {
 
                           {/* Room Details */}
                           <div className="flex justify-between w-full">
-                        {hotels.room.map((room, index) => (
-                          <div className=" items-center justify-center bg-white space-x-24  mt-14 mb-14 shadow-lg rounded-lg ">
-                            <ul className={`${width > 1024 ? "flex" : "  space-x-2"}`}>
-                              <img
-                                src={hotels.image}
-                                alt="hotel"
-                                className="w-60 h-40 object-contain p-4"
-                              />
-                              <ul
-                                className={`${
-                                  width > 1024
-                                    ? "flex flex-col ml-10"
-                                    : "flex flex-col mt-5"
-                                }`}
-                              >
-                                <li
+                            {hotels.room.map((room, index) => (
+                              <div className=" items-center justify-center bg-white space-x-24  mt-14 mb-14 shadow-lg rounded-lg ">
+                                <ul
                                   className={`${
-                                    width < 1024
-                                      ? "text-xl font-semibold ml-3"
-                                      : "text-xl font-semibold"
+                                    width > 1024 ? "flex" : "  space-x-2"
                                   }`}
                                 >
-                                  {room.type}
-                                </li>
+                                  <img
+                                    src={hotels.image}
+                                    alt="hotel"
+                                    className="w-60 h-40 object-contain p-4"
+                                  />
+                                  <ul
+                                    className={`${
+                                      width > 1024
+                                        ? "flex flex-col ml-10"
+                                        : "flex flex-col mt-5"
+                                    }`}
+                                  >
+                                    <li
+                                      className={`${
+                                        width < 1024
+                                          ? "text-xl font-semibold ml-3"
+                                          : "text-xl font-semibold"
+                                      }`}
+                                    >
+                                      {room.type}
+                                    </li>
 
-                                <li
-                                  className={`${
-                                    width < 1024
-                                      ? "text-lg font-bold text-blue-600 mt-4 ml-3"
-                                      : "text-lg font-bold text-blue-600 mt-4"
-                                  }`}
-                                >
-                                  {room.price}/night
-                                </li>
-                              </ul>
+                                    <li
+                                      className={`${
+                                        width < 1024
+                                          ? "text-lg font-bold text-blue-600 mt-4 ml-3"
+                                          : "text-lg font-bold text-blue-600 mt-4"
+                                      }`}
+                                    >
+                                      {room.price}/night
+                                    </li>
+                                  </ul>
 
-                              <li
-                                className={`${
-                                  width > 1024
-                                    ? "bg-[#2D3DDF] ml-10 text-white items-center text-center justify-center"
-                                    : "bg-[#2D3DDF] text-white mt-5"
-                                }`}
-                              >
-                                <button
-                                  onClick={(_) => {
-                                    handle_booknow(room, hotels);
-                                  }}
-
-                                  className="flex w-full items-center text-center justify-center px-4 py-2"
-                                  style={{
-                                    writingMode: `${
-                                      width > 1024 ? " vertical-rl" : ""
-                                    }`,
-                                  }}
-                                >
-                                  <p className=" items-center"> Book Now</p>
-                                </button>
-                              </li>
-                            </ul>
+                                  <li
+                                    className={`${
+                                      width > 1024
+                                        ? "bg-[#2D3DDF] ml-10 text-white items-center text-center justify-center"
+                                        : "bg-[#2D3DDF] text-white mt-5"
+                                    }`}
+                                  >
+                                    <button
+                                      onClick={(_) => {
+                                        handle_booknow(room, hotels);
+                                      }}
+                                      className="flex w-full items-center text-center justify-center px-4 py-2"
+                                      style={{
+                                        writingMode: `${
+                                          width > 1024 ? " vertical-rl" : ""
+                                        }`,
+                                      }}
+                                    >
+                                      <p className=" items-center"> Book Now</p>
+                                    </button>
+                                  </li>
+                                </ul>
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                      </div>
                           {/* Test */}
                         </div>
                       ))}
+
+                      
                     </>
                   )}
 
                   {/* ขวา */}
-                  
                 </div>
+                {width <= 800 &&
                 <div>
-                    <div class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto mt-3">
-                      <div class="flex items-center mb-4">
-                        <div class="bg-blue-500 text-white text-xl font-bold p-3 rounded-lg mr-3">
-                          8.4
-                        </div>
-                        <div>
-                          <p class="font-semibold text-lg">Excellent</p>
-                          <p class="text-gray-500 text-sm">6879 Reviews</p>
-                        </div>
-                      </div>
+                <div class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto mt-3 mb-20">
+                  <div class="flex items-center mb-4">
+                    <div class="bg-blue-500 text-white text-xl font-bold p-3 rounded-lg mr-3">
+                      8.4
+                    </div>
+                    <div>
+                      <p class="font-semibold text-lg">Excellent</p>
+                      <p class="text-gray-500 text-sm">6879 Reviews</p>
+                    </div>
+                  </div>
 
-                      <div class="mb-4">
-                        <div class="flex items-center mb-2">
-                          <span class="text-gray-700 w-32">Housekeeping</span>
-                          <div class="flex space-x-1">
-                            <span class="text-yellow-500">&#9733;</span>
-                            <span class="text-yellow-500">&#9733;</span>
-                            <span class="text-yellow-500">&#9733;</span>
-                            <span class="text-yellow-500">&#9733;</span>
-                            <span class="text-gray-300">&#9733;</span>
-                          </div>
-                        </div>
-                        <div class="flex items-center mb-2">
-                          <span class="text-gray-700 w-32">Food</span>
-                          <div class="flex space-x-1">
-                            <span class="text-yellow-500">&#9733;</span>
-                            <span class="text-yellow-500">&#9733;</span>
-                            <span class="text-yellow-500">&#9733;</span>
-                            <span class="text-yellow-500">&#9733;</span>
-                            <span class="text-yellow-500">&#9733;</span>
-                          </div>
-                        </div>
-                        <div class="flex items-center mb-2">
-                          <span class="text-gray-700 w-32">Service</span>
-                          <div class="flex space-x-1">
-                            <span class="text-yellow-500">&#9733;</span>
-                            <span class="text-yellow-500">&#9733;</span>
-                            <span class="text-yellow-500">&#9733;</span>
-                            <span class="text-yellow-500">&#9733;</span>
-                            <span class="text-gray-300">&#9733;</span>
-                          </div>
-                        </div>
-                        <div class="flex items-center mb-2">
-                          <span class="text-gray-700 w-32">Staff</span>
-                          <div class="flex space-x-1">
-                            <span class="text-yellow-500">&#9733;</span>
-                            <span class="text-yellow-500">&#9733;</span>
-                            <span class="text-yellow-500">&#9733;</span>
-                            <span class="text-yellow-500">&#9733;</span>
-                            <span class="text-gray-300">&#9733;</span>
-                          </div>
-                        </div>
+                  <div class="mb-4">
+                    <div class="flex items-center mb-2">
+                      <span class="text-gray-700 w-32">Housekeeping</span>
+                      <div class="flex space-x-1">
+                        <span class="text-yellow-500">&#9733;</span>
+                        <span class="text-yellow-500">&#9733;</span>
+                        <span class="text-yellow-500">&#9733;</span>
+                        <span class="text-yellow-500">&#9733;</span>
+                        <span class="text-gray-300">&#9733;</span>
                       </div>
-
-                      <div class="mb-4">
-                        <p class="font-semibold text-gray-700">Services</p>
-                        <div class="flex space-x-3 mt-2">
-                          <div class="p-2 bg-gray-100 rounded-lg shadow">
-                            <i class="fas fa-car"></i>
-                          </div>
-                          <div class="p-2 bg-gray-100 rounded-lg shadow">
-                            <i class="fas fa-swimmer"></i>
-                          </div>
-                          <div class="p-2 bg-gray-100 rounded-lg shadow">
-                            <i class="fas fa-concierge-bell"></i>
-                          </div>
-                          <div class="p-2 bg-gray-100 rounded-lg shadow">
-                            <i class="fas fa-wifi"></i>
-                          </div>
-                          <div class="p-2 bg-gray-100 rounded-lg shadow">
-                            <i class="fas fa-dumbbell"></i>
-                          </div>
-                        </div>
+                    </div>
+                    <div class="flex items-center mb-2">
+                      <span class="text-gray-700 w-32">Food</span>
+                      <div class="flex space-x-1">
+                        <span class="text-yellow-500">&#9733;</span>
+                        <span class="text-yellow-500">&#9733;</span>
+                        <span class="text-yellow-500">&#9733;</span>
+                        <span class="text-yellow-500">&#9733;</span>
+                        <span class="text-yellow-500">&#9733;</span>
                       </div>
-
-                      <div class="text-red-500 text-center font-semibold mt-4">
-                        <span class="inline-block mr-2">&#9888;</span>
-                        This property is in high demand today.
+                    </div>
+                    <div class="flex items-center mb-2">
+                      <span class="text-gray-700 w-32">Service</span>
+                      <div class="flex space-x-1">
+                        <span class="text-yellow-500">&#9733;</span>
+                        <span class="text-yellow-500">&#9733;</span>
+                        <span class="text-yellow-500">&#9733;</span>
+                        <span class="text-yellow-500">&#9733;</span>
+                        <span class="text-gray-300">&#9733;</span>
+                      </div>
+                    </div>
+                    <div class="flex items-center mb-2">
+                      <span class="text-gray-700 w-32">Staff</span>
+                      <div class="flex space-x-1">
+                        <span class="text-yellow-500">&#9733;</span>
+                        <span class="text-yellow-500">&#9733;</span>
+                        <span class="text-yellow-500">&#9733;</span>
+                        <span class="text-yellow-500">&#9733;</span>
+                        <span class="text-gray-300">&#9733;</span>
                       </div>
                     </div>
                   </div>
+
+                  <div class="mb-4">
+                    <p class="font-semibold text-gray-700">Services</p>
+                    <div class="flex space-x-3 mt-2">
+                      <div class="p-2 bg-gray-100 rounded-lg shadow">
+                        <i class="fas fa-car"></i>
+                      </div>
+                      <div class="p-2 bg-gray-100 rounded-lg shadow">
+                        <i class="fas fa-swimmer"></i>
+                      </div>
+                      <div class="p-2 bg-gray-100 rounded-lg shadow">
+                        <i class="fas fa-concierge-bell"></i>
+                      </div>
+                      <div class="p-2 bg-gray-100 rounded-lg shadow">
+                        <i class="fas fa-wifi"></i>
+                      </div>
+                      <div class="p-2 bg-gray-100 rounded-lg shadow">
+                        <i class="fas fa-dumbbell"></i>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="text-red-500 text-center font-semibold mt-4">
+                    <span class="inline-block mr-2">&#9888;</span>
+                    This property is in high demand today.
+                  </div>
+                </div>
+              </div>
+              }
               </div>
             )}
           </div>
