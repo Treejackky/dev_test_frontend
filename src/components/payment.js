@@ -35,7 +35,7 @@ import moment from "moment-timezone";
 
 import { Popover, Button, Form, InputNumber, Row, Col } from "antd";
 
-export default function Payments() {
+export default function Payment() {
   const {
     checkin,
     checkout,
