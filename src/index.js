@@ -6,6 +6,7 @@ import Explore from './components/Explore';
 import Hotels from './components/Hotels';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Room from './components/Room';
 import Review from './components/Review';
 
 
@@ -23,8 +24,12 @@ const router = createBrowserRouter([
     element: <Hotels />,
   },
   {
-    path: '/review/:location/:hotel/:id',
+    path: '/review/:checkin/:checkout/:adult/:childrens/:room/:base_price/:room_num/:id/:hotel/:locations',
     element: <Review />,
+  },
+  {
+    path: '/room/:locations/:id/:name/',
+    element: <Room />,
   }
 ]);
 

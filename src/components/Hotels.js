@@ -9,8 +9,8 @@ import axios from "axios";
 import PG3 from "../PG3.png";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 
 import { useState, useEffect } from "react";
 // import json file
@@ -50,7 +50,6 @@ export default function Hotels() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-
   function production_check() {
     const isDevelopment =
       window.location.origin.includes("localhost") ||
@@ -82,35 +81,62 @@ export default function Hotels() {
   };
 
   let Search_Hotels = async (location) => {
-
-
-    axios.get(production_check()+"/v1/hotels" + location).then((res) => {
-        console.log(res.data.msg);
-        setData(res.data.msg);
+    axios.get(production_check() + "/v1/hotels" + location).then((res) => {
+      console.log(res.data.msg);
+      setData(res.data.msg);
     });
 
-    axios.get(production_check()+"/v1/hotels" + "Bangkok").then((res) => {
-        // console.log(res.data.msg);
-        // setData(res.data.msg);
-        setDefaultData(res.data.msg);
+    axios.get(production_check() + "/v1/hotels" + "Bangkok").then((res) => {
+      // console.log(res.data.msg);
+      // setData(res.data.msg);
+      setDefaultData(res.data.msg);
     });
-
   };
-  
+
   const handle_back = () => {
     window.location.href = `/`;
     console.log("Back");
   };
 
+//   {
+//     "id": 1,
+//     "name": "Centara Grand Mirage Beach Resort Pattaya",
+//     "location": "Pattaya",
+//     "image": "https://kbpxgdufneefcyphdgpx.supabase.co/storage/v1/object/public/Dev_Test_Img/Img_1.jpg",
+//     "desc": "5-star hotel with 2 outdoor pools, near Pattaya Beach",
+//     "room": [
+//       {
+//         "type": "Deluxe Room",
+//         "price": 5000
+//       },
+//       {
+//         "type": "Deluxe Ocean Facing Room",
+//         "price": 6000
+//       },
+//       {
+//         "type": "Premium Deluxe Room",
+//         "price": 7000
+//       },
+//       {
+//         "type": "Premium Deluxe Family Residence",
+//         "price": 8000
+//       }
+//     ]
+//   },
+
   const handle_review = (e) => {
-    // parse to string json 
+
     let locations = e.location;
     let id = e.id;
     let name = e.name;
-    console.log(e)
-    // e = JSON.stringify(e);
-    window.location.href = `/review/${locations}/${name}/${id}`;
-    console.log("Review",e);
+    let image = e.image;
+    let desc = e.desc;
+    let room = e.room;
+    let room_type = e.room.type;
+    
+    window.location.href = `/room/${locations}/${id}/${name}`;
+    console.log("Review", e);
+
   };
 
   useEffect(() => {
@@ -362,22 +388,39 @@ export default function Hotels() {
               <div className={`${width > 800 ? "" : ""}`}>
                 <div className={`${width > 800 ? "flex w-full" : ""}`}>
                   {width > 800 && (
-                    <button onClick={(_)=>{handle_back()}} className="flex items-center w-14 h-12 justify-between bg-[#EBEDFF] ml-8 mt-10 mb-14 shadow-lg rounded-full">
-                        <div></div>
-                      <ArrowBackIosNewIcon/> 
+                    <button
+                      onClick={(_) => {
+                        handle_back();
+                      }}
+                      className="flex items-center w-14 h-12 justify-between bg-[#EBEDFF] ml-8 mt-10 mb-14 shadow-lg rounded-full"
+                    >
+                      <div></div>
+                      <ArrowBackIosNewIcon />
                       <div></div>
                     </button>
                   )}
                   {width <= 800 && (
-                    <button onClick={(_)=>{handle_back()}} className="flex mt-5 w-96 justify-between px-10 py-5 ">
-                  
-                      <div><ArrowBackIosIcon/></div>
+                    <button
+                      onClick={(_) => {
+                        handle_back();
+                      }}
+                      className="flex mt-5 w-96 justify-between px-10 py-5 "
+                    >
+                      <div>
+                        <ArrowBackIosIcon />
+                      </div>
                       <div>Hotels</div>
                       <div>{""}</div>
                     </button>
                   )}
 
-                  <div className={`${width < 800 ? " items-center ml-10 mr-10" : "items-center mt-1 mr-10"}`}>
+                  <div
+                    className={`${
+                      width < 800
+                        ? " items-center ml-10 mr-10"
+                        : "items-center mt-1 mr-10"
+                    }`}
+                  >
                     <input
                       type="text"
                       value={inputValue}
@@ -424,33 +467,31 @@ export default function Hotels() {
                   <div className="overflow-auto">
                     {/* Recommended Section */}
                     <div className="">
-
-                    <h1 className="text-xl mt-6 w-96 px-8 font-semibold mb-4">
+                      <h1 className="text-xl mt-6 w-96 px-8 font-semibold mb-4">
                         Recommended
-                    </h1>
-                    
-                    <div className=" px-5 mt-5 w-96 flex overflow-auto ">
-                     
-                      {default_data.map((hotel, index) => (
-                        <ul key={index} className="mb-6 space-x-4 w-80">
-                          <img
-                            src={hotel.image}
-                            alt="hotel"
-                            className="w-96 h-36 object-cover rounded-lg border-2 border-gray-100  "
-                          />
-                          <li className="flex space-x-4 mt-4 items-center">
-                            <div>
-                              <p className="text-sm w-40 font-semibold">
-                                Trips Thailand
-                              </p>
-                              <p className="w-40 text-xs">
-                                Get 10% off on booking
-                              </p>
-                            </div>
-                          </li>
-                        </ul>
-                      ))}
-                    </div>
+                      </h1>
+
+                      <div className=" px-5 mt-5 w-96 flex overflow-auto ">
+                        {default_data.map((hotel, index) => (
+                          <ul key={index} className="mb-6 space-x-4 w-80">
+                            <img
+                              src={hotel.image}
+                              alt="hotel"
+                              className="w-96 h-36 object-cover rounded-lg border-2 border-gray-100  "
+                            />
+                            <li className="flex space-x-4 mt-4 items-center">
+                              <div>
+                                <p className="text-sm w-40 font-semibold">
+                                  Trips Thailand
+                                </p>
+                                <p className="w-40 text-xs">
+                                  Get 10% off on booking
+                                </p>
+                              </div>
+                            </li>
+                          </ul>
+                        ))}
+                      </div>
                     </div>
 
                     {/* Main Hotel Listings */}
@@ -489,7 +530,12 @@ export default function Hotels() {
                                   Price starts from 1,000
                                 </p>
                               </div>
-                              <button onClick={(_)=>{handle_review(hotel)}}  className="mt-4 h-10 w-48  text-xs bg-gray rounded text-[#2D3DDF] border-2 border-gray-100">
+                              <button
+                                onClick={(_) => {
+                                  handle_review(hotel);
+                                }}
+                                className="mt-4 h-10 w-48  text-xs bg-gray rounded text-[#2D3DDF] border-2 border-gray-100"
+                              >
                                 View Details
                               </button>
                             </div>
@@ -543,12 +589,14 @@ export default function Hotels() {
                                 </p>
                               </div>
 
-
-                              <button onClick={(_)=>{handle_review(hotel)}} className="mt-4 h-10 w-40 text-center text-xs bg-gray rounded text-[#2D3DDF] border-2 border-gray-100">
+                              <button
+                                onClick={(_) => {
+                                  handle_review(hotel);
+                                }}
+                                className="mt-4 h-10 w-40 text-center text-xs bg-gray rounded text-[#2D3DDF] border-2 border-gray-100"
+                              >
                                 View Details
                               </button>
-
-
                             </div>
                           </div>
                         ))}

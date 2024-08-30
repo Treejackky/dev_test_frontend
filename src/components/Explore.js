@@ -80,38 +80,15 @@ export default function Explore() {
   // }, []);
 
   let Search_Hotels = async (location) => {
-
-
     console.log(production_check());
 
     axios.get(production_check()+"/v1/hotels" + location).then((res) => {
-      console.log(res.data.msg);
 
       if (location) {
         // navigate(`/hotels/${location}`);
         window.location.href = `/hotels/${location}`;
       }
-
-       
     });
-
-
-    // try {
-    //   const res = await axios.get(production_check()+"/v1/hotels" + location);
-    //   // console.log(location);
-    //   console.log(res.data.msg);
-
-    //   if (location) {
-    //     // navigate(`/hotels/${location}`);
-    //     window.location.href = `/hotels/${location}`;
-    //   }
-
-    //   // setData(res.data.msg);
-    //   // return res;
-    // } catch (error) {
-    //   console.error("Error fetching hotels:", error);
-    //   throw error;
-    // }
   };
 
   const Params = () => {
@@ -493,7 +470,7 @@ export default function Explore() {
             />
           </div>
 
-          <div className="flex ml-8 w-full mt-3 text-[#8E8E8E] bg-[#ffffff] px-4 py-2 rounded-sm border-opacity-35 border-2 border-[#2D3DDF]">
+          <div className="flex w-full ml-8 mt-3 items-center text-[#8E8E8E] bg-[#ffffff] px-4 py-2 rounded-sm border-opacity-35 border-2 border-[#2D3DDF]">
             <GroupOutlinedIcon />
             <p className="ml-10 text-black hover:text-[#2D3DDF]">
               {" "}

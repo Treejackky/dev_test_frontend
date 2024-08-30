@@ -29,19 +29,7 @@ import moment from "moment-timezone";
 
 import { Popover, Button, Form, InputNumber, Row, Col } from "antd";
 
-export default function Review() {
-  const {
-    checkin,
-    checkout,
-    adult,
-    childrens,
-    room_num,
-    base_price,
-    room,
-    id,
-    hotel,
-    locations,
-  } = useParams();
+export default function Room() {
   const navigate = useNavigate();
   const dtp = thai_provinces.map((_) => _.name_en);
   const [loading, setLoading] = useState(true);
@@ -49,17 +37,6 @@ export default function Review() {
   const [inputValue2, setInputValue2] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [default_data, setDefaultData] = useState([]);
-
-  const [hotel_name, setHotel_name] = useState("");
-  const [hotel_desc, setHotel_desc] = useState("");
-  const [img, setImg] = useState("");
-  const [checkin_api, setCheckin_api] = useState(Date());
-  const [checkout_api, setCheckout_api] = useState(Date());
-  const [adult_api, setAdult_api] = useState(0);
-  const [children_api, setChildren_api] = useState(0);
-  const [room_type_api, setRoomType_api] = useState("");
-  const [room_num_api, setRoomNum_api] = useState(0);
-  const [total_day, setTotalDay_api] = useState(0);
 
   //   const navigate = useNavigate();
   const [selected, setSelected] = useState("Explore");
@@ -203,7 +180,7 @@ export default function Review() {
   };
 
   const [startDate, setStartDate] = useState(
-    checkin || moment.tz(timezone).format()
+    localStorage.getItem("startDate") || moment.tz(timezone).format()
   );
 
   const today = new Date();
@@ -212,7 +189,8 @@ export default function Review() {
   tomorrow.setDate(today.getDate() + 1);
 
   const [endDate, setEndDate] = useState(
-    checkout || moment.tz(timezone).add(1, "day").format()
+    localStorage.getItem("endDate") ||
+      moment.tz(timezone).add(1, "day").format()
   );
 
   useEffect(() => {
@@ -245,6 +223,7 @@ export default function Review() {
     }
   };
   //   get params
+  const { location, id, name } = useParams();
 
   let handle_search = (e) => {
     window.location.href = `/hotels/${e}`;
@@ -280,77 +259,38 @@ export default function Review() {
     console.log("Review", e);
   };
 
-  const handle_booknow = (e) => {
-    console.log(e);
+  const handle_booknow = (room_type, hotels) => {
+    // '/review/:checkin/:checkout/:adults/:children/:rooms/:hotel/:location',
+
+    let room = room_type.type;
+    let checkin = startDate;
+    let checkout = endDate;
+    let adult = adults;
+    let childrens = children;
+    let id = hotels.id;
+    let hotel = hotels.name;
+    let locations = hotels.location;
+    let room_num = rooms;
+    let base_price = room_type.price;
+
+    let res = {
+      room: room,
+      hotel: hotel,
+      locations: locations,
+      checkin: checkin,
+      checkout: checkout,
+      adult: adult,
+      childrens: childrens,
+      room_num: room_num,
+    };
+
+    console.log(res);
+    window.location.href = `/review/${checkin}/${checkout}/${adult}/${childrens}/${room}/${base_price}/${room_num}/${id}/${hotel}/${locations}`;
   };
 
   useEffect(() => {
-    // Search_Hotels(location, id, name);
-    console.log(
-      checkin,
-      checkout,
-      adult,
-      childrens,
-      room,
-      room_num,
-      id,
-      hotel,
-      locations
-    );
-
-    // setAdults(adult);
-    // setChildren(childrens);
-    // setRooms(room_num);
-    // setStartDate(checkin);
-    // setEndDate(checkout);
-
-    api_cal();
+    Search_Hotels(location, id, name);
   }, []);
-
-  const api_cal = async () => {
-    console.log(production_check());
-    try {
-      // ส่งคำขอ POST ไปยัง API ด้วยข้อมูลที่ต้องการ
-      const res = await axios.post(production_check() + "/v1/cal_price", {
-        checkin: checkin,
-        checkout: checkout,
-        adult: adult,
-        childrens: childrens,
-        rooms: room,
-        room_num: room_num,
-        id: id,
-        hotel: hotel,
-        base_price: base_price,
-        locations: locations,
-      });
-
-      //   console.log(res.data.msg);
-      if (res.data.msg) {
-        setData(res.data.msg);
-        setHotel_name(res.data.msg.hotel[0].name);
-        setHotel_desc(res.data.msg.hotel[0].desc);
-        setImg(res.data.msg.hotel[0].image);
-        setCheckin_api(res.data.msg.checkin);
-        setCheckout_api(res.data.msg.checkout);
-        setAdult_api(res.data.msg.adult);
-        setChildren_api(res.data.msg.children);
-        setRoomType_api(res.data.msg.rooms);
-        setRoomNum_api(res.data.msg.room_num);
-
-        const date1 = new Date(checkin);
-        const date2 = new Date(checkout);
-        const diffTime = Math.abs(date2 - date1);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-        setTotalDay_api(diffDays);
-
-        // console.log(res.data.adult)
-        // console.log(res.data.room_num)
-      }
-    } catch (error) {
-      console.error("Error while fetching data:", error);
-    }
-  };
 
   function Sidebar() {
     return (
@@ -672,368 +612,326 @@ export default function Review() {
                   </div>
                 )}
 
-                {width > 800 && (
-                    <div className="flex">
-                    <div className="p-6 w-1/2">
-                      {/* Review your booking title */}
-                      <h2 className="text-2xl font-semibold mb-4">
-                        Review your booking
-                      </h2>
-  
-                      {/* Hotel Information */}
-                      <div className="flex justify-between items-start mb-6">
+                <div className="flex">
+                  {width > 800 && (
+                    <>
+                      {data.map((hotels) => (
+                        <div
+                          key={hotels.id}
+                          className="flex flex-col items-center justify-center p-4"
+                        >
+                          <div className="flex flex-col items-start justify-center w-full space-y-4">
+                        <div className="flex space-x-2">
+                           <img
+                            src={hotels.image}
+                            className="w-full h-72 object-cover"
+                            alt="hotel"
+                          />
+                           <div className="flex flex-col space-y-2">
+                            <img
+                              src={hotels.image}
+                              className="w-96 h-48 object-cover"
+                              alt="hotel"
+                            />
+                            <div className="flex space-x-2">
+                              <img
+                                src={hotels.image}
+                                className="w-32 h-24 object-cover"
+                                alt="hotel"
+                              />
+                              <img
+                                src={hotels.image}
+                                className="w-32 h-24 object-cover"
+                                alt="hotel"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                          {/* Hotel Details */}
+                          <div className="text-left mt-4 flex w-full justify-around">
+                            <div className="text-left">
+                              <h2 className="text-lg font-semibold ">
+                                {hotels.name}
+                              </h2>
+                              <p className="text-blue-500">{hotels.location}</p>
+                            </div>
+                            <p className="text-lg text-right text-[#2D3DDF] mt-2 border border-[#2D3DDF] px-2 py-1 rounded-lg">
+                              Price Starting from 1,000 BAHT
+                            </p>
+                          </div>
+
+                          {/* Room Details */}
+                          <div className="flex justify-between w-full">
+                        {hotels.room.map((room, index) => (
+                          <div className=" items-center justify-center bg-white mr-8 mt-14 mb-14 shadow-lg rounded-lg ">
+                            <ul className={`${width > 1024 ? "flex" : ""}`}>
+                              <img
+                                src={hotels.image}
+                                alt="hotel"
+                                className="w-60 h-40 object-fill"
+                              />
+                              <ul
+                                className={`${
+                                  width > 1024
+                                    ? "flex flex-col ml-10"
+                                    : "flex flex-col mt-5"
+                                }`}
+                              >
+                                <li
+                                  className={`${
+                                    width < 1024
+                                      ? "text-xl font-semibold ml-3"
+                                      : "text-xl font-semibold"
+                                  }`}
+                                >
+                                  {room.type}
+                                </li>
+
+                                <li
+                                  className={`${
+                                    width < 1024
+                                      ? "text-lg font-bold text-blue-600 mt-4 ml-3"
+                                      : "text-lg font-bold text-blue-600 mt-4"
+                                  }`}
+                                >
+                                  {room.price}/night
+                                </li>
+                              </ul>
+
+                              <li
+                                className={`${
+                                  width > 1024
+                                    ? "bg-[#2D3DDF] ml-10 text-white items-center text-center justify-center"
+                                    : "bg-[#2D3DDF] text-white mt-5"
+                                }`}
+                              >
+                                <button
+                                  onClick={(_) => {
+                                    handle_booknow(room, hotels);
+                                  }}
+                                  className="flex w-full items-center text-center justify-center px-4 py-2"
+                                  style={{
+                                    writingMode: `${
+                                      width > 1024 ? " vertical-rl" : ""
+                                    }`,
+                                  }}
+                                >
+                                  <p className="h-36 items-center"> Book Now</p>
+                                </button>
+                              </li>
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                          {/* Test */}
+                        </div>
+                      ))}
+                    </>
+                  )}
+
+                  {width <= 800 && (
+                    <>
+                      {data.map((hotels) => (
+                        <div
+                          key={hotels.id}
+                          className="flex flex-col items-center justify-center p-4"
+                        >
+                          {/* Hotel Images */}
+                          <div className="flex flex-col items-start justify-center w-full space-y-4">
+                        <div className=" space-y-2">
+                           <img
+                            src={hotels.image}
+                            className="w-full h-72 object-cover"
+                            alt="hotel"
+                          />
+                           <div className="flex flex-col space-y-4">
+                            
+                            <div className="flex space-x-2">
+                              <img
+                                src={hotels.image}
+                                className="w-96 h-24 object-cover"
+                                alt="hotel"
+                              />
+                              <img
+                                src={hotels.image}
+                                className="w-96 h-24 object-cover"
+                                alt="hotel"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                          {/* Hotel Details */}
+                          <div className="text-left mt-4  w-full justify-around">
+                            <div className="text-left">
+                              <h2 className="text-lg font-semibold ">
+                                {hotels.name}
+                              </h2>
+                              <p className="text-blue-500">{hotels.location}</p>
+                            </div>
+                            <p className="text-lg text-center text-[#2D3DDF] mt-2 border border-[#2D3DDF] px-2 py-1 rounded-lg">
+                              Price Starting from 1,000 BAHT
+                            </p>
+                          </div>
+
+                          {/* Room Details */}
+                          <div className="flex justify-between w-full">
+                        {hotels.room.map((room, index) => (
+                          <div className=" items-center justify-center bg-white space-x-24  mt-14 mb-14 shadow-lg rounded-lg ">
+                            <ul className={`${width > 1024 ? "flex" : "  space-x-2"}`}>
+                              <img
+                                src={hotels.image}
+                                alt="hotel"
+                                className="w-60 h-40 object-contain p-4"
+                              />
+                              <ul
+                                className={`${
+                                  width > 1024
+                                    ? "flex flex-col ml-10"
+                                    : "flex flex-col mt-5"
+                                }`}
+                              >
+                                <li
+                                  className={`${
+                                    width < 1024
+                                      ? "text-xl font-semibold ml-3"
+                                      : "text-xl font-semibold"
+                                  }`}
+                                >
+                                  {room.type}
+                                </li>
+
+                                <li
+                                  className={`${
+                                    width < 1024
+                                      ? "text-lg font-bold text-blue-600 mt-4 ml-3"
+                                      : "text-lg font-bold text-blue-600 mt-4"
+                                  }`}
+                                >
+                                  {room.price}/night
+                                </li>
+                              </ul>
+
+                              <li
+                                className={`${
+                                  width > 1024
+                                    ? "bg-[#2D3DDF] ml-10 text-white items-center text-center justify-center"
+                                    : "bg-[#2D3DDF] text-white mt-5"
+                                }`}
+                              >
+                                <button
+                                  onClick={(_) => {
+                                    handle_booknow(room, hotels);
+                                  }}
+
+                                  className="flex w-full items-center text-center justify-center px-4 py-2"
+                                  style={{
+                                    writingMode: `${
+                                      width > 1024 ? " vertical-rl" : ""
+                                    }`,
+                                  }}
+                                >
+                                  <p className=" items-center"> Book Now</p>
+                                </button>
+                              </li>
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                          {/* Test */}
+                        </div>
+                      ))}
+                    </>
+                  )}
+
+                  {/* ขวา */}
+                  
+                </div>
+                <div>
+                    <div class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto mt-3">
+                      <div class="flex items-center mb-4">
+                        <div class="bg-blue-500 text-white text-xl font-bold p-3 rounded-lg mr-3">
+                          8.4
+                        </div>
                         <div>
-                          <h3 className="text-lg font-bold text-blue-600">
-                            {hotel_name}{" "}
-                            <span className="text-yellow-400">★★★★☆</span>
-                          </h3>
-                          <p className="text-sm text-gray-600">{locations}</p>
-                          <p className="text-xs text-gray-500">{hotel_desc}</p>
-                        </div>
-                        <img
-                          src={img}
-                          alt="Hotel"
-                          className="w-32 h-24 object-cover rounded-lg"
-                        />
-                      </div>
-  
-                      {/* Booking Details */}
-                      <div className="bg-gray-100 p-4 w-full rounded-lg flex justify-between items-center mb-6">
-                        <div>
-                          <p className="text-sm text-gray-500">Check-in</p>
-                          <p className="text-lg font-bold">{checkin_api}</p>
-                          <p className="text-sm text-gray-500">10am</p>
-                        </div>
-                        <div className="text-center">
-                          <p className="bg-blue-100 text-blue-500 px-4 py-1 rounded-full">
-                            {total_day-1} Night
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-sm text-gray-500">Check-out</p>
-                          <p className="text-lg font-bold">{checkout_api}</p>
-                          <p className="text-sm text-gray-500">10am</p>
-                        </div>
-                        <p className="text-lg font-semibold">
-                          {adult_api} Adult - {room_num_api} room
-                        </p>
-                      </div>
-  
-                      {/* Guest Details Form */}
-                      <div className="space-y-4">
-                        <h4 className="text-lg font-medium mb-2">
-                          Guest Details
-                        </h4>
-                        <div className="grid grid-cols-2 gap-4">
-                          <input
-                            type="text"
-                            placeholder="First Name"
-                            className="border border-gray-300 rounded p-2"
-                          />
-                          <input
-                            type="text"
-                            placeholder="Last Name"
-                            className="border border-gray-300 rounded p-2"
-                          />
-                          <input
-                            type="email"
-                            placeholder="E-mail address"
-                            className="border border-gray-300 rounded p-2"
-                          />
-                          <input
-                            type="text"
-                            placeholder="Mobile number"
-                            className="border border-gray-300 rounded p-2"
-                          />
-                        </div>
-  
-                        {/* Add Guest Button */}
-                        <button className="text-blue-500 mt-2">
-                          Add Guest +
-                        </button>
-  
-                        {/* Special Request Field */}
-                        <div className="mt-4">
-                          <h4 className="text-lg font-medium mb-2">
-                            Special Request (optional)
-                          </h4>
-                          <textarea
-                            className="w-full border border-gray-300 rounded p-2"
-                            rows="4"
-                            placeholder="Enter any special requests..."
-                          ></textarea>
+                          <p class="font-semibold text-lg">Excellent</p>
+                          <p class="text-gray-500 text-sm">6879 Reviews</p>
                         </div>
                       </div>
-                      <div className="flex  mt-3 items-center text-white bg-[#2D3DDF] px-4 py-2 w-40 justify-center rounded-sm border-opacity-35 border-2 border-[#2D3DDF]">
-                        Continue
-                      </div>
-                    </div>
-  
-                    {/* ขวา */}
-             
-                    <div>
-                      {/* <div class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto mt-3"> */}
-                      <div className="p-6 mt-3 mx-auto">
-                        <div class=" items-center space-y-2 mb-4">
-                          <div className="flex justify-between space-x-24">
-                            <p class="text-gray-500 text-sm">
-                              {data && data.room_num} room x{" "}
-                              {data && data.room_num - 1} night
-                            </p>
-                            <p class="text-gray-500 text-sm">
-                              {data && data.price} Bath
-                            </p>
-                          </div>
-                          <div className="flex justify-between space-x-24">
-                            <p class="text-gray-500 text-sm">Total Discount</p>
-                            <p class="text-gray-500 text-sm">
-                              {data && data.total_discount} Bath
-                            </p>
-                          </div>
-                          <div className="flex justify-between space-x-24">
-                            <p class="text-gray-500 text-sm">
-                              Price after discount
-                            </p>
-                            <p class="text-gray-500 text-sm">
-                              {data && data.price_after_discount} Bath
-                            </p>
-                          </div>
-                          <div className="flex justify-between space-x-24">
-                            <p class="text-gray-500 text-sm">
-                              Taxes & services fees
-                            </p>
-                            <p class="text-gray-500 text-sm">
-                              {Math.floor(data && data.taxe_vat)} Bath
-                            </p>
-                          </div>
-                          <div className="flex justify-between space-x-24">
-                            <p class="text-black text-lg font-semibold">
-                              Total Amount
-                            </p>
-                            <p class="text-black text-lg font-semibold">
-                              {data && data.total_price} Bath
-                            </p>
-                          </div>
-                          {/*  */}
-                          <div className="space-y-2 bg-white p-6 rounded-lg shadow-md max-w-md mx-auto mt-3">
-                            <div className="flex justify-between space-x-24">
-                              <p class="text-black text-lg font-semibold">
-                                Cancelation Charges
-                              </p>
-                            </div>
-  
-                            <div className="flex justify-between space-x-24">
-                              <p class="text-black text-sm font-semibold">
-                              Non Refundable
-                              </p>
-                            </div>
-  
-                            <div className="flex justify-between space-x-24">
-                              <p class="text-gray-500 text-xs">
-                                Penalty may be charged by the airline & by MMT
-                                based on how close to departure date you cancel.
-                                View fare rules to know more.
-                              </p>
-                            </div>
-  
-                            <div className="flex justify-between space-x-24">
-                              <p class="text-gray-500 text-lg font-semibold">
-                                View Policy
-                              </p>
-                            </div>
+
+                      <div class="mb-4">
+                        <div class="flex items-center mb-2">
+                          <span class="text-gray-700 w-32">Housekeeping</span>
+                          <div class="flex space-x-1">
+                            <span class="text-yellow-500">&#9733;</span>
+                            <span class="text-yellow-500">&#9733;</span>
+                            <span class="text-yellow-500">&#9733;</span>
+                            <span class="text-yellow-500">&#9733;</span>
+                            <span class="text-gray-300">&#9733;</span>
                           </div>
                         </div>
+                        <div class="flex items-center mb-2">
+                          <span class="text-gray-700 w-32">Food</span>
+                          <div class="flex space-x-1">
+                            <span class="text-yellow-500">&#9733;</span>
+                            <span class="text-yellow-500">&#9733;</span>
+                            <span class="text-yellow-500">&#9733;</span>
+                            <span class="text-yellow-500">&#9733;</span>
+                            <span class="text-yellow-500">&#9733;</span>
+                          </div>
+                        </div>
+                        <div class="flex items-center mb-2">
+                          <span class="text-gray-700 w-32">Service</span>
+                          <div class="flex space-x-1">
+                            <span class="text-yellow-500">&#9733;</span>
+                            <span class="text-yellow-500">&#9733;</span>
+                            <span class="text-yellow-500">&#9733;</span>
+                            <span class="text-yellow-500">&#9733;</span>
+                            <span class="text-gray-300">&#9733;</span>
+                          </div>
+                        </div>
+                        <div class="flex items-center mb-2">
+                          <span class="text-gray-700 w-32">Staff</span>
+                          <div class="flex space-x-1">
+                            <span class="text-yellow-500">&#9733;</span>
+                            <span class="text-yellow-500">&#9733;</span>
+                            <span class="text-yellow-500">&#9733;</span>
+                            <span class="text-yellow-500">&#9733;</span>
+                            <span class="text-gray-300">&#9733;</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="mb-4">
+                        <p class="font-semibold text-gray-700">Services</p>
+                        <div class="flex space-x-3 mt-2">
+                          <div class="p-2 bg-gray-100 rounded-lg shadow">
+                            <i class="fas fa-car"></i>
+                          </div>
+                          <div class="p-2 bg-gray-100 rounded-lg shadow">
+                            <i class="fas fa-swimmer"></i>
+                          </div>
+                          <div class="p-2 bg-gray-100 rounded-lg shadow">
+                            <i class="fas fa-concierge-bell"></i>
+                          </div>
+                          <div class="p-2 bg-gray-100 rounded-lg shadow">
+                            <i class="fas fa-wifi"></i>
+                          </div>
+                          <div class="p-2 bg-gray-100 rounded-lg shadow">
+                            <i class="fas fa-dumbbell"></i>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="text-red-500 text-center font-semibold mt-4">
+                        <span class="inline-block mr-2">&#9888;</span>
+                        This property is in high demand today.
                       </div>
                     </div>
                   </div>
-                )}
-
-                {width <= 800 && (
-                    <div className="">
-                    <div className=" w-full px-4 py-3 ">
-                      {/* Review your booking title */}
-                      <h2 className="text-2xl font-semibold mb-4 px-4 py-5">
-                        Review your booking
-                      </h2>
-  
-                      {/* Hotel Information */}
-                      <div className=" justify-center items-center mb-6 px-4 py5 ">
-                        <div>
-                          <h3 className="text-lg font-bold text-blue-600">
-                            {hotel_name}{" "}
-                            <span className="text-yellow-400">★★★★☆</span>
-                          </h3>
-                          <p className="text-sm text-gray-600">{locations}</p>
-                          <p className="text-xs text-gray-500">{hotel_desc}</p>
-                        </div>
-                        <img
-                          src={img}
-                          alt="Hotel"
-                          className="w-full  h-32 object-cover rounded-lg"
-                        />
-                      </div>
-  
-                      {/* Booking Details */}
-                      <div className="bg-gray-100 p-4 w-96  rounded-lg justify-center items-center mb-6">
-                        <div className="flex w-full  justify-between items-center">
-                        <div className="">
-                          <p className="text-sm text-gray-500">Check-in</p>
-                          <p className="text-lg font-bold">{checkin_api}</p>
-                          <p className="text-sm text-gray-500">10am</p>
-                        </div>
-                        <div className="text-center items-center ">
-                          <p className="bg-blue-100 text-blue-500 px-4 py-1 rounded-full">
-                            {total_day-1} Night
-                          </p>
-                        </div>
-
-                        </div>
-                        <div className="flex w-full justify-between items-center">
-
-                        <div>
-                          <p className="text-sm text-gray-500">Check-out</p>
-                          <p className="text-lg font-bold">{checkout_api}</p>
-                          <p className="text-sm text-gray-500">10am</p>
-                        </div>
-                        <p className="text-lg font-semibold">
-                          {adult_api} Adult - {room_num_api} room
-                        </p>
-                      </div>
-                      </div>
-                     
-                    </div>
-  
-                    {/* ขวา */}
-             
-                    <div>
-                      <div class="p-6 rounded-lg max-w-md mx-auto mt-3">
-                        <div class=" items-center space-y-2 mb-4">
-                          <div className="flex justify-between space-x-24">
-                            <p class="text-gray-500 text-sm">
-                              {data && data.room_num} room x{" "}
-                              {data && data.room_num - 1} night
-                            </p>
-                            <p class="text-gray-500 text-sm">
-                              {data && data.price} Bath
-                            </p>
-                          </div>
-                          <div className="flex justify-between space-x-24 ">
-                            <p class="text-gray-500 text-sm">Total Discount</p>
-                            <p class="text-gray-500 text-sm">
-                              {data && data.total_discount} Bath
-                            </p>
-                          </div>
-                          <div className="flex justify-between space-x-24">
-                            <p class="text-gray-500 text-sm">
-                              Price after discount
-                            </p>
-                            <p class="text-gray-500 text-sm">
-                              {data && data.price_after_discount} Bath
-                            </p>
-                          </div>
-                          <div className="flex justify-between space-x-24">
-                            <p class="text-gray-500 text-sm">
-                              Taxes & services fees
-                            </p>
-                            <p class="text-gray-500 text-sm">
-                              {Math.floor(data && data.taxe_vat)} Bath
-                            </p>
-                          </div>
-                          <div className="flex justify-between space-x-24">
-                            <p class="text-black text-lg font-semibold">
-                              Total Amount
-                            </p>
-                            <p class="text-black text-lg font-semibold">
-                              {data && data.total_price} Bath
-                            </p>
-                          </div>
-                          {/*  */}
-                          <div className="space-y-2 bg-white p-6 rounded-lg shadow-md max-w-md mx-auto mt-3">
-                            <div className="flex justify-between space-x-24">
-                              <p class="text-black text-lg font-semibold">
-                                Cancelation Charges
-                              </p>
-                            </div>
-  
-                            <div className="flex justify-between space-x-24">
-                              <p class="text-black text-sm font-semibold">
-                              Non Refundable
-                              </p>
-                            </div>
-  
-                            <div className="flex justify-between space-x-24">
-                              <p class="text-gray-500 text-xs">
-                                Penalty may be charged by the airline & by MMT
-                                based on how close to departure date you cancel.
-                                View fare rules to know more.
-                              </p>
-                            </div>
-  
-                            <div className="flex justify-between space-x-24">
-                              <p class="text-gray-500 text-lg font-semibold">
-                                View Policy
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                        {/* Guest Details Form */}
-                     <div className="space-y-4">
-                        <h4 className="text-lg font-medium mb-2">
-                          Guest Details
-                        </h4>
-                        <div className="grid grid-cols-1 gap-4">
-                          <input
-                            type="text"
-                            placeholder="First Name"
-                            className="border border-gray-300 rounded p-2"
-                          />
-                          <input
-                            type="text"
-                            placeholder="Last Name"
-                            className="border border-gray-300 rounded p-2"
-                          />
-                          <input
-                            type="email"
-                            placeholder="E-mail address"
-                            className="border border-gray-300 rounded p-2"
-                          />
-                          <input
-                            type="text"
-                            placeholder="Mobile number"
-                            className="border border-gray-300 rounded p-2"
-                          />
-                        </div>
-  
-                        {/* Add Guest Button */}
-                        <button className="text-blue-500 mt-2">
-                          Add Guest +
-                        </button>
-  
-                        {/* Special Request Field */}
-                        <div className="mt-4">
-                          <h4 className="text-lg font-medium mb-2">
-                            Special Request (optional)
-                          </h4>
-                          <textarea
-                            className="w-full border border-gray-300 rounded p-2"
-                            rows="4"
-                            placeholder="Enter any special requests..."
-                          ></textarea>
-                        </div>
-                      </div>
-                      <div className="flex  mt-3 items-center text-white bg-[#2D3DDF] px-4 py-2 w-full justify-center rounded-sm border-opacity-35 border-2 border-[#2D3DDF]">
-                        Continue
-                      </div>
-                      </div>
-                      
-                    </div>
-
-                     
-                  </div>
-                )}
-
-
-
               </div>
             )}
           </div>
